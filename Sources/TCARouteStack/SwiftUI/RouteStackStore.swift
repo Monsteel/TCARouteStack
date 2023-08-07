@@ -29,8 +29,8 @@ State.Screen == Screen
     var screen = screen
     return store.scope(
       state: {
-        if let index = $0.paths.flatten.firstIndex(where: { $0.id == id }) {
-          screen = $0.paths.flatten[safe: index]?.data ?? screen
+        if let index = $0.paths.firstIndex(where: { $0.id == id }) {
+          screen = $0.paths[safe: index]?.data ?? screen
         }
         return screen
       },

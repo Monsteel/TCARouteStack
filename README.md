@@ -18,7 +18,7 @@
 ## 기반
 
 이 프로젝트는 [RouteStack](https://github.com/Monsteel/RouteStack)을 기반으로 구현되었습니다.<br>
-`RoutePaths<Screen.State>`의 API 등, 자세한 내용은 해당 라이브러리의 문서를 참고해 주세요
+보다 자세한 내용은 해당 라이브러리의 문서를 참고해 주세요
 
 ## 사용방법
 
@@ -68,11 +68,11 @@ public struct RouterView: View {
 ```swift
 public struct Router: ReducerProtocol {
   public struct State: Equatable, RouterState {
-    public var paths: RoutePaths<Screen.State>
+    public var paths: [RoutePath<Screen.State>]
   }
 
   public enum Action: Equatable, RouterAction {
-    case updatePaths(RoutePaths<Screen.State>)
+    case updatePaths([RoutePath<Screen.State>])
     case pathAction(RoutePath<Screen.State>.ID, action: Screen.Action)
   }
 
@@ -143,7 +143,7 @@ public struct RouterView: View {
 ```swift
 public struct Router: ReducerProtocol {
   public struct State: Equatable, RouterState {
-    public var paths: RoutePaths<Screen.State>
+    public var paths: [RoutePath<Screen.State>]
     // 생략
   }
 
@@ -158,15 +158,15 @@ public struct Router: ReducerProtocol {
       case let .openURL(url):
         switch url.host {
         case "back":
-          state.paths.back()
+          state.paths.removeLast()
         case "backToRoot":
-          state.paths.backToRoot()
+          state.paths.removeAll()
         case "firstView":
-          state.paths.moveTo(RoutePath(data: Screen.State.first(.init()), style: .cover))
+          state.paths.append(RoutePath(data: Screen.State.first(.init()), style: .cover))
         case "secondView":
-          state.paths.moveTo(RoutePath(data: Screen.State.second(.init()), style: .push))
+          state.paths.append(RoutePath(data: Screen.State.second(.init()), style: .push))
         case "thirdView":
-          state.paths.moveTo(RoutePath(data: Screen.State.third(.init()), style: .sheet([.medium, .large], .visible)))
+          state.paths.append(RoutePath(data: Screen.State.third(.init()), style: .sheet([.medium, .large], .visible)))
         default: break
         }
         return .none

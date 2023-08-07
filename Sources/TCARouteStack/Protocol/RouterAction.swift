@@ -12,6 +12,6 @@ public protocol RouterAction: Equatable {
   associatedtype Screen: Equatable
   associatedtype ScreenAction: Equatable
   
-  static func updatePaths(_ paths: RoutePaths<Screen>) -> Self
+  static func updatePaths(_ paths: [RoutePath<Screen>]) -> Self
   static func pathAction(_ id: RoutePath<Screen>.ID, action: ScreenAction) -> Self
 }

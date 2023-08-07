@@ -9,7 +9,7 @@ import SwiftUI
 import RouteStack
 
 struct ContentView: View {
-  @State var routePaths: RoutePaths<Path> = .init()
+  @State var routePaths: [RoutePath<Path>] = []
   
   @ViewBuilder
   func root() -> some View {
@@ -33,19 +33,19 @@ struct ContentView: View {
           }
           
           Button("push") {
-            routePaths.moveTo(.init(data: Path.second("push"), style: .push))
+            routePaths.append(.init(data: Path.second("push"), style: .push))
           }
           
           Button("custom-sheet") {
-            routePaths.moveTo(.init(data: Path.second("custom-sheet"), style: .sheet([.medium, .large], .visible)))
+            routePaths.append(.init(data: Path.second("custom-sheet"), style: .sheet([.medium, .large], .visible)))
           }
           
           Button("normal-sheet") {
-            routePaths.moveTo(.init(data: Path.second("normal-sheet"), style: .sheet()))
+            routePaths.append(.init(data: Path.second("normal-sheet"), style: .sheet()))
           }
           
           Button("cover") {
-            routePaths.moveTo(.init(data: Path.second("cover"), style: .cover))
+            routePaths.append(.init(data: Path.second("cover"), style: .cover))
           }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -64,19 +64,19 @@ struct ContentView: View {
           }
           
           Button("push") {
-            routePaths.moveTo(.init(data: Path.third("push"), style: .push))
+            routePaths.append(.init(data: Path.third("push"), style: .push))
           }
           
           Button("custom-sheet") {
-            routePaths.moveTo(.init(data: Path.third("custom-sheet"), style: .sheet([.medium, .large], .visible)))
+            routePaths.append(.init(data: Path.third("custom-sheet"), style: .sheet([.medium, .large], .visible)))
           }
           
           Button("normal-sheet") {
-            routePaths.moveTo(.init(data: Path.third("normal-sheet"), style: .sheet()))
+            routePaths.append(.init(data: Path.third("normal-sheet"), style: .sheet()))
           }
           
           Button("cover") {
-            routePaths.moveTo(.init(data: Path.third("cover"), style: .cover))
+            routePaths.append(.init(data: Path.third("cover"), style: .cover))
           }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -106,9 +106,9 @@ struct ContentView: View {
     .onOpenURL { url in
       switch url.host {
       case "back":
-        routePaths.back()
+        routePaths.removeLast()
       case "backToRoot":
-        routePaths.backToRoot()
+        routePaths.removeAll()
       default: break
       }
     }

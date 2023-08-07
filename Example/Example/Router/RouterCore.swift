@@ -13,7 +13,7 @@ import Foundation
 public struct Router: ReducerProtocol {
   public struct State: Equatable, RouterState {
     public var root: Root.State
-    public var paths: RoutePaths<Screen.State>
+    public var paths: [RoutePath<Screen.State>]
     
     public init(
       root: Root.State = .init(),
@@ -27,7 +27,7 @@ public struct Router: ReducerProtocol {
   public enum Action: Equatable, RouterAction {
     case openURL(URL)
     case root(Root.Action)
-    case updatePaths(RoutePaths<Screen.State>)
+    case updatePaths([RoutePath<Screen.State>])
     case pathAction(RoutePath<Screen.State>.ID, action: Screen.Action)
   }
   
@@ -52,15 +52,15 @@ public struct Router: ReducerProtocol {
         }
         switch url.host {
         case "back":
-          state.paths.back()
+          state.paths.removeLast()
         case "backToRoot":
-          state.paths.backToRoot()
+          state.paths.removeAll()
         case "firstView":
-          state.paths.moveTo(RoutePath(data: Screen.State.first(.init(value: value)), style: style))
+          state.paths.append(RoutePath(data: Screen.State.first(.init(value: value)), style: style))
         case "secondView":
-          state.paths.moveTo(RoutePath(data: Screen.State.second(.init(value: value)), style: style))
+          state.paths.append(RoutePath(data: Screen.State.second(.init(value: value)), style: style))
         case "thirdView":
-          state.paths.moveTo(RoutePath(data: Screen.State.third(.init(value: value)), style: style))
+          state.paths.append(RoutePath(data: Screen.State.third(.init(value: value)), style: style))
         default: break
         }
         return .none

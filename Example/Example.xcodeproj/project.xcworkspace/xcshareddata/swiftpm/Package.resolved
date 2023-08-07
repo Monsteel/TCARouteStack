@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Monsteel/RouteStack.git",
       "state" : {
-        "revision" : "5499476a1bdf0cf932f752f25febbd64cf221c3e",
-        "version" : "0.0.6"
+        "revision" : "2b5a6f5e7ca4bcf60bfd50b8cb3237e230067796",
+        "version" : "0.1.0"
       }
     },
     {

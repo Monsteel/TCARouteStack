@@ -11,5 +11,5 @@ import RouteStack
 public protocol RouterState: Equatable {
   associatedtype Screen: Equatable
   
-  var paths: RoutePaths<Screen> { get set }
+  var paths: [RoutePath<Screen>] { get set }
 }

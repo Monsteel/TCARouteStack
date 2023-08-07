@@ -17,7 +17,7 @@ TCARouteStack allows you to manage navigation and presentation states as a singl
 ## Base
 
 This project is built on top of [RouteStack](https://github.com/Monsteel/RouteStack).<br>
-For details about the API of RoutePaths<Screen.State> and more, please refer to the documentation of the respective library.
+For more information, please refer to the documentation of the respective library.
 
 ## How to Use
 
@@ -67,11 +67,11 @@ public struct RouterView: View {
 ```swift
 public struct Router: ReducerProtocol {
   public struct State: Equatable, RouterState {
-    public var paths: RoutePaths<Screen.State>
+    public var paths: [RoutePath<Screen.State>]
   }
 
   public enum Action: Equatable, RouterAction {
-    case updatePaths(RoutePaths<Screen.State>)
+    case updatePaths([RoutePath<Screen.State>])
     case pathAction(RoutePath<Screen.State>.ID, action: Screen.Action)
   }
 
@@ -142,7 +142,7 @@ public struct RouterView: View {
 ```swift
 public struct Router: ReducerProtocol {
   public struct State: Equatable, RouterState {
-    public var paths: RoutePaths<Screen.State>
+    public var paths: [RoutePath<Screen.State>]
     // 생략
   }
 
@@ -157,15 +157,15 @@ public struct Router: ReducerProtocol {
       case let .openURL(url):
         switch url.host {
         case "back":
-          state.paths.back()
+          state.paths.removeLast()
         case "backToRoot":
-          state.paths.backToRoot()
+          state.paths.removeAll()
         case "firstView":
-          state.paths.moveTo(RoutePath(data: Screen.State.first(.init()), style: .cover))
+          state.paths.append(RoutePath(data: Screen.State.first(.init()), style: .cover))
         case "secondView":
-          state.paths.moveTo(RoutePath(data: Screen.State.second(.init()), style: .push))
+          state.paths.append(RoutePath(data: Screen.State.second(.init()), style: .push))
         case "thirdView":
-          state.paths.moveTo(RoutePath(data: Screen.State.third(.init()), style: .sheet([.medium, .large], .visible)))
+          state.paths.append(RoutePath(data: Screen.State.third(.init()), style: .sheet([.medium, .large], .visible)))
         default: break
         }
         return .none

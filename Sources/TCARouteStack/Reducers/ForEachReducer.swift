@@ -25,7 +25,7 @@ extension ReducerProtocol {
     CombineReducers {
       _ForEachRoutePathIDReducer(
         parent: self,
-        toElementsState: \.paths.flatten,
+        toElementsState: \.paths,
         toElementAction: /Self.Action.pathAction,
         element: element(),
         file: file,
