@@ -13,8 +13,8 @@ let package = Package(
       targets: ["TCARouteStack"]),
   ],
   dependencies: [
-    .package(url: "https://github.com/Monsteel/RouteStack.git", from: "0.1.1"),
-    .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "0.56.0"),
+    .package(url: "https://github.com/Monsteel/RouteStack.git", .upToNextMinor(from: "0.1.2")),
+    .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", .upToNextMajor(from: "0.56.0")),
   ],
   targets: [
     .target(
