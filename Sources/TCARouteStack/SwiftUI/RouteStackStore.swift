@@ -51,7 +51,7 @@ State.Screen == Screen
   }
   
   public var body: some View {
-    WithViewStore(store) { viewStore in
+    WithViewStore(store, observe: { $0 }) { viewStore in
       RouteStack(
         viewStore.binding(
           get: \.paths,

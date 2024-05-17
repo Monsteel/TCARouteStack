@@ -10,7 +10,7 @@ import ComposableArchitecture
 import TCARouteStack
 import Foundation
 
-public struct Router: ReducerProtocol {
+public struct Router: Reducer {
   public struct State: Equatable, RouterState {
     public var root: Root.State
     public var paths: [RoutePath<Screen.State>]
@@ -31,7 +31,7 @@ public struct Router: ReducerProtocol {
     case pathAction(RoutePath<Screen.State>.ID, action: Screen.Action)
   }
   
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
       case let .openURL(url):
@@ -81,7 +81,7 @@ public struct Router: ReducerProtocol {
   public init() { }
 }
 
-public struct Screen: ReducerProtocol {
+public struct Screen: Reducer {
   public enum State: Equatable {
     case first(First.State)
     case second(Second.State)
@@ -94,7 +94,7 @@ public struct Screen: ReducerProtocol {
     case third(Third.Action)
   }
   
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     Scope(state: /State.first, action: /Action.first) {
       First()
     }

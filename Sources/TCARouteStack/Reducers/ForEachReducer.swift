@@ -9,13 +9,13 @@ import ComposableArchitecture
 import RouteStack
 import Foundation
 
-extension ReducerProtocol {
-  public func forEachRoute<ElementState, ElementAction, Element: ReducerProtocol>(
+extension Reducer {
+  public func forEachRoute<ElementState, ElementAction, Element: Reducer>(
     @ReducerBuilder<ElementState, ElementAction> element: () -> Element,
     file: StaticString = #file,
     fileID: StaticString = #fileID,
     line: UInt = #line
-  ) -> some ReducerProtocol<Self.State, Self.Action>
+  ) -> some Reducer<Self.State, Self.Action>
   where
   ElementState == Element.State, ElementAction == Element.Action,
   Self.State: RouterState, Self.Action: RouterAction,
@@ -42,15 +42,15 @@ extension ReducerProtocol {
   }
 }
 
-struct _UpdatePathsOnInteraction<Parent: ReducerProtocol, Routes>: ReducerProtocol {
+struct _UpdatePathsOnInteraction<Parent: Reducer, Routes>: Reducer {
   typealias State = Parent.State
   typealias Action = Parent.Action
   
   let reducer: Parent
-  let updatePaths: CasePath<Action, Routes>
+  let updatePaths: AnyCasePath<Action, Routes>
   let toLocalState: WritableKeyPath<State, Routes>
   
-  func reduce(into state: inout Parent.State, action: Parent.Action) -> EffectTask<Action> {
+  func reduce(into state: inout Parent.State, action: Parent.Action) -> Effect<Action> {
     if let routes = updatePaths.extract(from: action) {
       state[keyPath: toLocalState] = routes
     }
@@ -60,9 +60,9 @@ struct _UpdatePathsOnInteraction<Parent: ReducerProtocol, Routes>: ReducerProtoc
 
 
 struct _ForEachRoutePathIDReducer<
-  Parent: ReducerProtocol,
-  Element: ReducerProtocol
->: ReducerProtocol
+  Parent: Reducer,
+  Element: Reducer
+>: Reducer
 where
 Parent.State: RouterState,
 Parent.Action: RouterAction,
@@ -74,7 +74,7 @@ Element.State == Parent.State.Screen
   
   let parent: Parent
   let toElementsState: WritableKeyPath<Parent.State, [RoutePath<Element.State>]>
-  let toElementAction: CasePath<Parent.Action, (ID, Element.Action)>
+  let toElementAction: AnyCasePath<Parent.Action, (ID, Element.Action)>
   let element: Element
   let file: StaticString
   let fileID: StaticString
@@ -83,7 +83,7 @@ Element.State == Parent.State.Screen
   init(
     parent: Parent,
     toElementsState: WritableKeyPath<Parent.State, [RoutePath<Element.State>]>,
-    toElementAction: CasePath<Parent.Action, (ID, Element.Action)>,
+    toElementAction: AnyCasePath<Parent.Action, (ID, Element.Action)>,
     element: Element,
     file: StaticString,
     fileID: StaticString,
@@ -100,14 +100,14 @@ Element.State == Parent.State.Screen
   
   public func reduce(
     into state: inout Parent.State, action: Parent.Action
-  ) -> EffectTask<Parent.Action> {
+  ) -> Effect<Parent.Action> {
     self.reduceForEach(into: &state, action: action)
       .merge(with: self.parent.reduce(into: &state, action: action))
   }
   
   func reduceForEach(
     into state: inout Parent.State, action: Parent.Action
-  ) -> EffectTask<Parent.Action> {
+  ) -> Effect<Parent.Action> {
     guard let (id, elementAction) = self.toElementAction.extract(from: action) else { return .none }
     let array = state[keyPath: self.toElementsState]
     guard let index = array.firstIndex(where: { $0.id == id }) else { return .none }

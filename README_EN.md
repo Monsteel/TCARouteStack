@@ -65,7 +65,7 @@ public struct RouterView: View {
 #### RouterCore
 
 ```swift
-public struct Router: ReducerProtocol {
+public struct Router: Reducer {
   public struct State: Equatable, RouterState {
     public var paths: [RoutePath<Screen.State>]
   }
@@ -75,7 +75,7 @@ public struct Router: ReducerProtocol {
     case pathAction(RoutePath<Screen.State>.ID, action: Screen.Action)
   }
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
       case .updatePaths:
@@ -91,7 +91,7 @@ public struct Router: ReducerProtocol {
   }
 }
 
-public struct Screen: ReducerProtocol {
+public struct Screen: Reducer {
   public enum State: Equatable {
     case first(First.State)
     case second(Second.State)
@@ -104,7 +104,7 @@ public struct Screen: ReducerProtocol {
     case third(Third.Action)
   }
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     Scope(state: /State.first, action: /Action.first) {
       First()
     }
@@ -140,7 +140,7 @@ public struct RouterView: View {
 #### RouterCore
 
 ```swift
-public struct Router: ReducerProtocol {
+public struct Router: Reducer {
   public struct State: Equatable, RouterState {
     public var paths: [RoutePath<Screen.State>]
     // 생략
@@ -151,7 +151,7 @@ public struct Router: ReducerProtocol {
     // 생략
   }
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
       case let .openURL(url):

@@ -15,7 +15,7 @@ public struct RootView: View {
   private let store: StoreOf<Root>
   
   public init(store: StoreOf<Root>) {
-    self.viewStore = ViewStoreOf<Root>(store)
+    self.viewStore = ViewStoreOf<Root>(store, observe: { $0 })
     self.store = store
   }
   

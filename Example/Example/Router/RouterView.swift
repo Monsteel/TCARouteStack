@@ -16,7 +16,7 @@ public struct RouterView: View {
   private let store: StoreOf<Router>
   
   public init(store: StoreOf<Router>) {
-    self.viewStore = ViewStoreOf<Router>(store)
+    self.viewStore = ViewStoreOf<Router>(store, observe: { $0 })
     self.store = store
   }
   

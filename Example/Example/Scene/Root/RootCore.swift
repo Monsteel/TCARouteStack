@@ -9,7 +9,7 @@
 import ComposableArchitecture
 import Foundation
 
-public struct Root: ReducerProtocol {
+public struct Root: Reducer {
   public struct State: Equatable {
 
     public init() { }
@@ -24,7 +24,7 @@ public struct Root: ReducerProtocol {
   
   @Dependency(\.uiApplication) var uiApplication
 
-  public var body: some ReducerProtocol<State, Action> {
+  public var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
       case .tappedPushButton:

@@ -15,7 +15,7 @@ public struct FirstView: View {
   private let store: StoreOf<First>
   
   public init(store: StoreOf<First>) {
-    self.viewStore = ViewStoreOf<First>(store)
+    self.viewStore = ViewStoreOf<First>(store, observe: { $0 })
     self.store = store
   }
   
